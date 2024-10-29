@@ -29,7 +29,7 @@ paths:
                   example: Male
                 mobileNumber:
                   type: string
-                  example: "+1234567890"
+                  example: '+1234567890'
                 email:
                   type: string
                   example: johndoe@example.com
@@ -52,7 +52,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: "Reviewer successfully registered. Please log in."
+                    example: 'Reviewer successfully registered. Please log in.'
         '400':
           description: Invalid input or email/mobile number already registered
           content:
@@ -62,7 +62,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: "Email already registered"
+                    example: 'Email already registered'
         '500':
           description: Server error
 
@@ -96,7 +96,7 @@ paths:
                     $ref: '#/components/schemas/Reviewer'
                   token:
                     type: string
-                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
         '400':
           description: Invalid email or password
           content:
@@ -106,7 +106,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: "Unable to login, Account Not Exists"
+                    example: 'Unable to login, Account Not Exists'
         '500':
           description: Server error
 
@@ -124,7 +124,7 @@ paths:
               properties:
                 mobileNumber:
                   type: string
-                  example: "+1234567890"
+                  example: '+1234567890'
       responses:
         '200':
           description: OTP sent successfully
@@ -135,7 +135,7 @@ paths:
                 properties:
                   msg:
                     type: string
-                    example: "OTP sent to your mobile number"
+                    example: 'OTP sent to your mobile number'
         '400':
           description: Reviewer not found or failed to send OTP
           content:
@@ -145,7 +145,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: "Reviewer Not Found"
+                    example: 'Reviewer Not Found'
 
   /api/reviewerAuth/verify-otp-login:
     post:
@@ -161,10 +161,10 @@ paths:
               properties:
                 mobileNumber:
                   type: string
-                  example: "+1234567890"
+                  example: '+1234567890'
                 otp:
                   type: string
-                  example: "123456"
+                  example: '123456'
       responses:
         '201':
           description: OTP verified and reviewer logged in successfully
@@ -177,7 +177,7 @@ paths:
                     $ref: '#/components/schemas/Reviewer'
                   token:
                     type: string
-                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
         '400':
           description: Invalid or expired OTP
           content:
@@ -187,7 +187,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: "Invalid or expired OTP"
+                    example: 'Invalid or expired OTP'
 
   /api/reviewerAuth/verifySession:
     get:
@@ -209,7 +209,7 @@ paths:
                     $ref: '#/components/schemas/Reviewer'
                   token:
                     type: string
-                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
         '401':
           description: Session expired or token invalid
           content:
@@ -222,7 +222,7 @@ paths:
                     example: false
                   error:
                     type: string
-                    example: "Authentication token is missing"
+                    example: 'Authentication token is missing'
 
   /api/reviewerAuth/logout:
     post:
@@ -241,7 +241,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: "Logged out successfully"
+                    example: 'Logged out successfully'
 
   /api/videos/get:
     get:
@@ -269,7 +269,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: "Internal server error occurred while retrieving videos"
+                    example: 'Internal server error occurred while retrieving videos'
 
   /api/videos/getbyId:
     get:
@@ -284,7 +284,7 @@ paths:
           name: videoId
           schema:
             type: string
-            example: "60d21b4667d0d8992e610c87"
+            example: '60d21b4667d0d8992e610c87'
           required: true
           description: The ID of the video to retrieve
       responses:
@@ -303,7 +303,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: "Video ID is required or invalid"
+                    example: 'Video ID is required or invalid'
         '404':
           description: Video not found
           content:
@@ -313,7 +313,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: "Video not found"
+                    example: 'Video not found'
         '500':
           description: Server error
           content:
@@ -323,7 +323,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: "Internal server error occurred while retrieving the video"
+                    example: 'Internal server error occurred while retrieving the video'
                     /api/videos/getByReviewerId:
   get:
     tags:
@@ -337,7 +337,7 @@ paths:
         name: reviewerId
         schema:
           type: string
-          example: "60d21b4667d0d8992e610c85"
+          example: '60d21b4667d0d8992e610c85'
         required: true
         description: The ID of the reviewer whose videos need to be retrieved
     responses:
@@ -358,7 +358,7 @@ paths:
               properties:
                 error:
                   type: string
-                  example: "Reviewer ID is required"
+                  example: 'Reviewer ID is required'
       '404':
         description: No videos found for the reviewer
         content:
@@ -368,7 +368,7 @@ paths:
               properties:
                 message:
                   type: string
-                  example: "No videos found for the specified reviewer"
+                  example: 'No videos found for the specified reviewer'
       '500':
         description: Server error
         content:
@@ -378,8 +378,7 @@ paths:
               properties:
                 error:
                   type: string
-                  example: "Internal server error occurred while retrieving videos"
-
+                  example: 'Internal server error occurred while retrieving videos'
 
 components:
   schemas:
@@ -388,42 +387,42 @@ components:
       properties:
         _id:
           type: string
-          example: "60d21b4667d0d8992e610c85"
+          example: '60d21b4667d0d8992e610c85'
         name:
           type: string
-          example: "John Doe"
+          example: 'John Doe'
         age:
           type: integer
           example: 28
         gender:
           type: string
-          example: "Male"
+          example: 'Male'
           enum:
             - Male
             - Female
             - Other
         mobileNumber:
           type: string
-          example: "+1234567890"
+          example: '+1234567890'
         email:
           type: string
-          example: "johndoe@example.com"
+          example: 'johndoe@example.com'
         profileImage:
           type: string
-          example: "https://your-s3-bucket.s3.amazonaws.com/path-to-profileImage.jpg"
+          example: 'https://your-s3-bucket.s3.amazonaws.com/path-to-profileImage.jpg'
         signature:
           type: string
-          example: "https://your-s3-bucket.s3.amazonaws.com/path-to-signature.jpg"
+          example: 'https://your-s3-bucket.s3.amazonaws.com/path-to-signature.jpg'
         profileType:
           type: string
-          example: "Reviewer"
+          example: 'Reviewer'
           enum:
             - Consultant
             - Reviewer
             - Doctor
         country:
           type: string
-          example: "USA"
+          example: 'USA'
         online:
           type: boolean
           example: true
@@ -444,7 +443,7 @@ components:
           example: false
         currentReviewId:
           type: string
-          example: "60d21b4667d0d8992e610c86"
+          example: '60d21b4667d0d8992e610c86'
         dailyTimeSpent:
           type: object
           additionalProperties:
@@ -452,34 +451,60 @@ components:
             items:
               type: integer
             example:
-              "2024-10-10": [0, 1, 2, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+              '2024-10-10':
+                [
+                  0,
+                  1,
+                  2,
+                  0,
+                  1,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                ]
         lastUpdate:
           type: string
           format: date-time
-          example: "2024-10-10T10:00:00Z"
+          example: '2024-10-10T10:00:00Z'
 
     Video:
       type: object
       properties:
         _id:
           type: string
-          example: "60d21b4667d0d8992e610c87"
+          example: '60d21b4667d0d8992e610c87'
         reviewId:
           type: string
-          example: "60d21b4667d0d8992e610c85"
+          example: '60d21b4667d0d8992e610c85'
         videoUrl:
           type: string
-          example: "https://your-s3-bucket.s3.amazonaws.com/path-to-video.mp4"
+          example: 'https://your-s3-bucket.s3.amazonaws.com/path-to-video.mp4'
         orientation:
           type: string
-          example: "Landscape"
+          example: 'Landscape'
           enum:
             - Landscape
             - Portrait
         duration:
           type: number
           example: 300.5
-          description: "Duration of the video in seconds"
+          description: 'Duration of the video in seconds'
 
   securitySchemes:
     BearerAuth:
