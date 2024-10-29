@@ -25,8 +25,6 @@ exports.fetchVideoById = async (videoId) => {
 //fetch videos by reviewer id
 // videoService.js
 
-const Video = require("../models/Video");
-
 exports.fetchVideosByReviewerId = async (reviewerId) => {
   try {
     // Find videos where the `reviewer` field matches the given reviewer ID
