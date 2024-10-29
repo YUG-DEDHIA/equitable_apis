@@ -1,0 +1,432 @@
+openapi: 3.0.0
+info:
+  title: Review App APIs
+  description: APIs for Review Platform
+  version: 1.0.0
+
+paths:
+  /api/reviewerAuth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new Reviewer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: John Doe
+                age:
+                  type: integer
+                  example: 28
+                gender:
+                  type: string
+                  enum: [Male, Female, Other]
+                  example: Male
+                mobileNumber:
+                  type: string
+                  example: "+1234567890"
+                email:
+                  type: string
+                  example: johndoe@example.com
+                password:
+                  type: string
+                  example: Password123
+                profileType:
+                  type: string
+                  example: Reviewer
+                country:
+                  type: string
+                  example: India
+      responses:
+        '201':
+          description: Reviewer successfully registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Reviewer successfully registered. Please log in."
+        '400':
+          description: Invalid input or email/mobile number already registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Email already registered"
+        '500':
+          description: Server error
+
+  /api/reviewerAuth/login-email:
+    post:
+      tags:
+        - Authentication
+      summary: Login with email and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: johndoe@example.com
+                password:
+                  type: string
+                  example: Password123
+      responses:
+        '201':
+          description: Reviewer successfully logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reviewer:
+                    $ref: '#/components/schemas/Reviewer'
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '400':
+          description: Invalid email or password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Unable to login, Account Not Exists"
+        '500':
+          description: Server error
+
+  /api/reviewerAuth/login-phone:
+    post:
+      tags:
+        - Authentication
+      summary: Request OTP for phone number login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mobileNumber:
+                  type: string
+                  example: "+1234567890"
+      responses:
+        '200':
+          description: OTP sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: "OTP sent to your mobile number"
+        '400':
+          description: Reviewer not found or failed to send OTP
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Reviewer Not Found"
+
+  /api/reviewerAuth/verify-otp-login:
+    post:
+      tags:
+        - Authentication
+      summary: Verify OTP and login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mobileNumber:
+                  type: string
+                  example: "+1234567890"
+                otp:
+                  type: string
+                  example: "123456"
+      responses:
+        '201':
+          description: OTP verified and reviewer logged in successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reviewer:
+                    $ref: '#/components/schemas/Reviewer'
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '400':
+          description: Invalid or expired OTP
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid or expired OTP"
+
+  /api/reviewerAuth/verifySession:
+    get:
+      tags:
+        - Authentication
+      summary: Verify reviewer session
+      responses:
+        '200':
+          description: Session verified, reviewer is logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isLoggedIn:
+                    type: boolean
+                    example: true
+                  reviewer:
+                    $ref: '#/components/schemas/Reviewer'
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '401':
+          description: Session expired or token invalid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isLoggedIn:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Authentication token is missing"
+
+  /api/reviewerAuth/logout:
+    post:
+      tags:
+        - Authentication
+      summary: Logout reviewer
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Logged out successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Logged out successfully"
+
+  /api/videos/get:
+    get:
+      tags:
+        - Video
+      summary: Get All Videos for Review
+      description: Retrieves all videos that are available for review.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: A list of videos available for review
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Video'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal server error occurred while retrieving videos"
+
+  /api/videos/getbyId:
+    get:
+      tags:
+        - Video
+      summary: Get Video by ID
+      description: Retrieve a specific video by its ID for review.
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: videoId
+          schema:
+            type: string
+            example: "60d21b4667d0d8992e610c87"
+          required: true
+          description: The ID of the video to retrieve
+      responses:
+        '200':
+          description: Successfully retrieved the video
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Video'
+        '400':
+          description: Missing or invalid video ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Video ID is required or invalid"
+        '404':
+          description: Video not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Video not found"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal server error occurred while retrieving the video"
+
+components:
+  schemas:
+    Reviewer:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "60d21b4667d0d8992e610c85"
+        name:
+          type: string
+          example: "John Doe"
+        age:
+          type: integer
+          example: 28
+        gender:
+          type: string
+          example: "Male"
+          enum:
+            - Male
+            - Female
+            - Other
+        mobileNumber:
+          type: string
+          example: "+1234567890"
+        email:
+          type: string
+          example: "johndoe@example.com"
+        profileImage:
+          type: string
+          example: "https://your-s3-bucket.s3.amazonaws.com/path-to-profileImage.jpg"
+        signature:
+          type: string
+          example: "https://your-s3-bucket.s3.amazonaws.com/path-to-signature.jpg"
+        profileType:
+          type: string
+          example: "Reviewer"
+          enum:
+            - Consultant
+            - Reviewer
+            - Doctor
+        country:
+          type: string
+          example: "USA"
+        online:
+          type: boolean
+          example: true
+        rating:
+          type: number
+          example: 4.5
+        videosReviewed:
+          type: integer
+          example: 10
+        videosPending:
+          type: integer
+          example: 2
+        accountBalance:
+          type: number
+          example: 100.50
+        in_review:
+          type: boolean
+          example: false
+        currentReviewId:
+          type: string
+          example: "60d21b4667d0d8992e610c86"
+        dailyTimeSpent:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: integer
+            example:
+              "2024-10-10": [0, 1, 2, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        lastUpdate:
+          type: string
+          format: date-time
+          example: "2024-10-10T10:00:00Z"
+
+    Video:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "60d21b4667d0d8992e610c87"
+        reviewId:
+          type: string
+          example: "60d21b4667d0d8992e610c85"
+        videoUrl:
+          type: string
+          example: "https://your-s3-bucket.s3.amazonaws.com/path-to-video.mp4"
+        orientation:
+          type: string
+          example: "Landscape"
+          enum:
+            - Landscape
+            - Portrait
+        duration:
+          type: number
+          example: 300.5
+          description: "Duration of the video in seconds"
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
