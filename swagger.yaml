@@ -324,190 +324,23 @@ paths:
                   error:
                     type: string
                     example: 'Internal server error occurred while retrieving the video'
-                    /api/videos/getByReviewerId:
-  get:
-    tags:
-      - Video
-    summary: Get Videos by Reviewer ID
-    description: Retrieve all videos assigned to a specific reviewer by their ID.
-    security:
-      - BearerAuth: []
-    parameters:
-      - in: query
-        name: reviewerId
-        schema:
-          type: string
-          example: '60d21b4667d0d8992e610c85'
-        required: true
-        description: The ID of the reviewer whose videos need to be retrieved
-    responses:
-      '200':
-        description: Successfully retrieved videos for the reviewer
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Video'
-      '400':
-        description: Reviewer ID is missing
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                error:
-                  type: string
-                  example: 'Reviewer ID is required'
-      '404':
-        description: No videos found for the reviewer
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: 'No videos found for the specified reviewer'
-      '500':
-        description: Server error
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                error:
-                  type: string
-                  example: 'Internal server error occurred while retrieving videos'
 
-components:
-  schemas:
-    Reviewer:
-      type: object
-      properties:
-        _id:
-          type: string
-          example: '60d21b4667d0d8992e610c85'
-        name:
-          type: string
-          example: 'John Doe'
-        age:
-          type: integer
-          example: 28
-        gender:
-          type: string
-          example: 'Male'
-          enum:
-            - Male
-            - Female
-            - Other
-        mobileNumber:
-          type: string
-          example: '+1234567890'
-        email:
-          type: string
-          example: 'johndoe@example.com'
-        profileImage:
-          type: string
-          example: 'https://your-s3-bucket.s3.amazonaws.com/path-to-profileImage.jpg'
-        signature:
-          type: string
-          example: 'https://your-s3-bucket.s3.amazonaws.com/path-to-signature.jpg'
-        profileType:
-          type: string
-          example: 'Reviewer'
-          enum:
-            - Consultant
-            - Reviewer
-            - Doctor
-        country:
-          type: string
-          example: 'USA'
-        online:
-          type: boolean
-          example: true
-        rating:
-          type: number
-          example: 4.5
-        videosReviewed:
-          type: integer
-          example: 10
-        videosPending:
-          type: integer
-          example: 2
-        accountBalance:
-          type: number
-          example: 100.50
-        in_review:
-          type: boolean
-          example: false
-        currentReviewId:
-          type: string
-          example: '60d21b4667d0d8992e610c86'
-        dailyTimeSpent:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: integer
-            example:
-              '2024-10-10':
-                [
-                  0,
-                  1,
-                  2,
-                  0,
-                  1,
-                  1,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                ]
-        lastUpdate:
-          type: string
-          format: date-time
-          example: '2024-10-10T10:00:00Z'
-
-    Video:
-      type: object
-      properties:
-        _id:
-          type: string
-          example: '60d21b4667d0d8992e610c87'
-        reviewId:
-          type: string
-          example: '60d21b4667d0d8992e610c85'
-        videoUrl:
-          type: string
-          example: 'https://your-s3-bucket.s3.amazonaws.com/path-to-video.mp4'
-        orientation:
-          type: string
-          example: 'Landscape'
-          enum:
-            - Landscape
-            - Portrait
-        duration:
-          type: number
-          example: 300.5
-          description: 'Duration of the video in seconds'
-
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+  /api/videos/getByReviewerId:
+    get:
+      tags:
+        - Video
+      summary: Get Videos by Reviewer ID
+      description: Retrieve all videos assigned to a specific reviewer by their ID.
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: reviewerId
+          schema:
+            type: string
+            example: '667425ac1a16e128eac7e761'
+          required: true
+          description: The ID of the reviewer whose videos need to be retrieved
+      responses:
+        '200':
+          description: Successfully retrieved videos

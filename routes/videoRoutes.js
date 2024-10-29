@@ -10,6 +10,6 @@ router.get('/get', auth, videoController.getVideos);
 // Route to get a video by ID
 router.get('/getbyId', auth, videoController.getVideoById);
 
-// Add new route for getting videos by reviewer ID
+// New route for getting videos by reviewer ID
 router.get('/getByReviewerId', auth, videoController.getVideosByReviewerId);
 module.exports = router;

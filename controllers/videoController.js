@@ -1,23 +1,6 @@
 const videoService = require('../services/videoService');
 
-exports.getVideosByReviewerId = async (req, res) => {
-  const { reviewerId } = req.query;
 
-  if (!reviewerId) {
-    return res.status(400).send({ error: "Reviewer ID is required" });
-  }
-
-  try {
-    const videos = await videoService.fetchVideosByReviewerId(reviewerId);
-    if (!videos.length) {
-      return res.status(404).send({ message: "No videos found for the specified reviewer" });
-    }
-    res.status(200).send(videos);
-  } catch (error) {
-    console.error("Error fetching videos by reviewer ID:", error);
-    res.status(error.status || 500).send({ error: error.message });
-  }
-};
 
 // Controller to get all videos
 exports.getVideos = async (req, res) => {
@@ -46,5 +29,25 @@ exports.getVideoById = async (req, res) => {
   } catch (error) {
     console.error("Error fetching video by ID:", error);
     res.status(500).json({ error: error.message });
+  }
+};
+// videoController.js
+
+exports.getVideosByReviewerId = async (req, res) => {
+  const { reviewerId } = req.query;
+
+  if (!reviewerId) {
+    return res.status(400).send({ error: "Reviewer ID is required" });
+  }
+
+  try {
+    const videos = await videoService.fetchVideosByReviewerId(reviewerId);
+    if (!videos.length) {
+      return res.status(404).send({ message: "No videos found for the specified reviewer" });
+    }
+    res.status(200).send(videos);
+  } catch (error) {
+    console.error("Error fetching videos by reviewer ID:", error);
+    res.status(error.status || 500).send({ error: error.message });
   }
 };
