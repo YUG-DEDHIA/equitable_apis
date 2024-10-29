@@ -324,6 +324,62 @@ paths:
                   error:
                     type: string
                     example: "Internal server error occurred while retrieving the video"
+                    /api/videos/getByReviewerId:
+  get:
+    tags:
+      - Video
+    summary: Get Videos by Reviewer ID
+    description: Retrieve all videos assigned to a specific reviewer by their ID.
+    security:
+      - BearerAuth: []
+    parameters:
+      - in: query
+        name: reviewerId
+        schema:
+          type: string
+          example: "60d21b4667d0d8992e610c85"
+        required: true
+        description: The ID of the reviewer whose videos need to be retrieved
+    responses:
+      '200':
+        description: Successfully retrieved videos for the reviewer
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Video'
+      '400':
+        description: Reviewer ID is missing
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  example: "Reviewer ID is required"
+      '404':
+        description: No videos found for the reviewer
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "No videos found for the specified reviewer"
+      '500':
+        description: Server error
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  example: "Internal server error occurred while retrieving videos"
+
 
 components:
   schemas:

@@ -1,5 +1,15 @@
 const Video = require('../models/video');
 
+
+exports.fetchVideosByReviewerId = async (reviewerId) => {
+  try {
+    const videos = await Video.find({ reviewer: reviewerId });
+    return videos;
+  } catch (error) {
+    console.error("Error fetching videos by reviewer ID:", error);
+    throw new Error("Failed to retrieve videos by reviewer ID");
+  }
+};
 // Service to fetch all videos
 exports.fetchVideos = async () => {
   try {
