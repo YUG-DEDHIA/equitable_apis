@@ -1,6 +1,6 @@
 const Video = require('../models/video');
 
-
+//fetch videos by reviewer id
 exports.fetchVideosByReviewerId = async (reviewerId) => {
   try {
     const videos = await Video.find({ reviewer: reviewerId });
