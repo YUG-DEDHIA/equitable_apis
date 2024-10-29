@@ -34,14 +34,14 @@ exports.getVideoById = async (req, res) => {
 // videoController.js
 
 exports.getVideosByReviewerId = async (req, res) => {
-  const { reviewer } = req.query;
+  const { reviewerId} = req.query;
 
   if (!reviewerId) {
     return res.status(400).send({ error: "Reviewer ID is required" });
   }
 
   try {
-    const videos = await videoService.fetchVideosByReviewerId(reviewer);
+    const videos = await videoService.fetchVideosByReviewerId(reviewerId);
     if (!videos.length) {
       return res.status(404).send({ message: "No videos found for the specified reviewer" });
     }

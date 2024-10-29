@@ -1,5 +1,6 @@
 const Video = require('../models/video');
-
+const mongoose = require('mongoose');
+const {ObjectId} = mongoose.Types;
 
 // Service to fetch all videos
 exports.fetchVideos = async () => {
@@ -25,10 +26,10 @@ exports.fetchVideoById = async (videoId) => {
 //fetch videos by reviewer id
 // videoService.js
 
-exports.fetchVideosByReviewerId = async (reviewer) => {
+exports.fetchVideosByReviewerId = async (reviewerId) => {
   try {
     // Find videos where the `reviewer` field matches the given reviewer ID
-    const videos = await Video.find({ reviewer: reviewer });
+    const videos = await Video.find({ reviewer: new ObjectID(reviewerId)});
     return videos;
   } catch (error) {
     console.error("Error fetching videos by reviewer ID:", error);
