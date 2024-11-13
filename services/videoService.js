@@ -25,11 +25,10 @@ exports.fetchVideoById = async (videoId) => {
 };
 //fetch videos by reviewer id
 // videoService.js
-
 exports.fetchVideosByReviewerId = async (reviewerId) => {
   try {
     // Find videos where the `reviewer` field matches the given reviewer ID
-    const videos = await Video.find({ reviewer: new ObjectID(reviewerId)});
+    const videos = await Video.find({ reviewer: new ObjectId(reviewerId)});
     return videos;
   } catch (error) {
     console.error("Error fetching videos by reviewer ID:", error);

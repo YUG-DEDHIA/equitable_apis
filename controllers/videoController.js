@@ -35,6 +35,7 @@ exports.getVideoById = async (req, res) => {
 
 exports.getVideosByReviewerId = async (req, res) => {
   const { reviewerId} = req.query;
+  console.log(reviewerId)
 
   if (!reviewerId) {
     return res.status(400).send({ error: "Reviewer ID is required" });

@@ -45,7 +45,7 @@ exports.login = async (email, password) => {
     throw new Error("Unable to login, Password Not Matched");
   }
   const token = jwt.sign({ _id: reviewer._id.toString() }, process.env.JWT_SECRET);
-  return { reviewer, token };
+  return {token };
 };
 
 exports.verifySession = async (token) => {
