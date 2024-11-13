@@ -34,24 +34,24 @@ exports.uploadSignature = async (req, res) => {
     }
   };
 
-  exports.getBalance = async (req, res) => {
-    try{
-      const reviewerId = req.user._id;
-      const result = await profileService.getBalance(reviewerId);
-      res.status(201).send(result);
-    } catch (error) {
-      const status = error.status || 500;
-      res.status(status).send({ error: error.message });
-    }
-  };
+  // exports.getBalance = async (req, res) => {
+  //   try{
+  //     const reviewerId = req.user._id;
+  //     const result = await profileService.getBalance(reviewerId);
+  //     res.status(201).send(result);
+  //   } catch (error) {
+  //     const status = error.status || 500;
+  //     res.status(status).send({ error: error.message });
+  //   }
+  // };
 
-  exports.getStats = async (req, res) => {
-    try{
-      const reviewerId = req.user._id;
-      const result = await profileService.getStats(reviewerId);
-      res.status(201).send(result);
-    } catch (error) {
-      const status = error.status || 500;
-      res.status(status).send({ error: error.message });
-    }
-  };
+  // exports.getStats = async (req, res) => {
+  //   try{
+  //     const reviewerId = req.user._id;
+  //     const result = await profileService.getStats(reviewerId);
+  //     res.status(201).send(result);
+  //   } catch (error) {
+  //     const status = error.status || 500;
+  //     res.status(status).send({ error: error.message });
+  //   }
+  // };

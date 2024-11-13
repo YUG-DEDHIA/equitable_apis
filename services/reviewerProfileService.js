@@ -67,31 +67,31 @@ exports.uploadProfileImage = async (reviewerId, file) => {
     }
   };
 
-  exports.getBalance = async (reviewerId) => {
-    try{
-      const reviewer = await Reviewer.findById(reviewerId);
-      if (!reviewer) {
-        throw new Error("Reviewer not found");
-      }
-      const balance = reviewer.accountBalance;
-      return {
-        balance: balance,
-      };
-    } catch (error) {
-      console.error("Error getting balance:", error);
-      throw new Error("Error getting balance");
-    }
-  }
+  // exports.getBalance = async (reviewerId) => {
+  //   try{
+  //     const reviewer = await Reviewer.findById(reviewerId);
+  //     if (!reviewer) {
+  //       throw new Error("Reviewer not found");
+  //     }
+  //     const balance = reviewer.accountBalance;
+  //     return {
+  //       balance: balance,
+  //     };
+  //   } catch (error) {
+  //     console.error("Error getting balance:", error);
+  //     throw new Error("Error getting balance");
+  //   }
+  // }
 
-  exports.getStats = async (reviewerId) => {
-    try{
-      const reviewer = await Reviewer.findById(reviewerId);
-      const stats = reviewer.dailyTimeSpent;
-      return {
-        stats: stats,
-      };
-    } catch (error) {
-      console.error("Error getting stats:", error);
-      throw new Error("Error getting stats");
-    }
-  }
+  // exports.getStats = async (reviewerId) => {
+  //   try{
+  //     const reviewer = await Reviewer.findById(reviewerId);
+  //     const stats = reviewer.dailyTimeSpent;
+  //     return {
+  //       stats: stats,
+  //     };
+  //   } catch (error) {
+  //     console.error("Error getting stats:", error);
+  //     throw new Error("Error getting stats");
+  //   }
+  // }
