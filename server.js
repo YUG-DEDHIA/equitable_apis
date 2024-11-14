@@ -12,7 +12,7 @@ const userProfileRoutes = require("./routes/userProfileRoutes");
 const reviewerAuthRoutes = require("./routes/reviewerAuthRoutes");
 const reviewerProfileRoutes = require("./routes/reviewerProfileRoutes");
 const videoRoutes = require("./routes/videoRoutes"); // Import the video routes
-
+const reportRoutes = require('./routes/reportRoutes');
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -37,6 +37,7 @@ app.use("/api/userProfile", userProfileRoutes);
 app.use("/api/reviewerAuth", reviewerAuthRoutes);
 app.use("/api/reviewerProfile", reviewerProfileRoutes);
 app.use("/api/videos", videoRoutes); // Use the video routes directly
+app.use("/api/reports",reportRoutes);
 
 // MongoDB connection
 mongoose

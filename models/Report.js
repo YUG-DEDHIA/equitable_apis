@@ -1,28 +1,19 @@
 const mongoose = require("mongoose");
 
 const reportSchema = new mongoose.Schema({
-  reviewId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Review",
-    unique: true,
-  },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    unique: true,
-  },
-  anomalies: [{
-    timestamp: {
-      type: Number,
-      required: true
+  videoId: { 
+    type: String,
+    required: true,
+    unique: true 
     },
-    name: {
-      type: String,
-      required: true
-    }
-  }],
+  images: [{ 
+    url: String,
+    timestamp: Number,
+    comment: String 
+    }],
+    finalSuggestions: String,
+  user: {type: mongoose.Schema.Types.ObjectId, ref: 'Test_User'}
 });
 
 const Report = mongoose.model("Report", reportSchema);
-
 module.exports = Report;

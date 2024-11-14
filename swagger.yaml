@@ -346,6 +346,300 @@ paths:
           description: Successfully retrieved videos
 
 
+  /api/reports/upload-image/{videoId}:
+    post:
+      tags:
+        - Report
+      summary: Upload Image for Report
+      description: Upload an image related to a specific video report.
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: videoId
+          schema:
+            type: string
+            example: '60d21b4667d0d8992e610c87'
+          required: true
+          description: The ID of the video for which the image is being uploaded
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                comment:
+                  type: string
+                  example: 'This is a sample comment.'
+                timestamp:
+                  type: integer
+                  example: 120
+      responses:
+        '201':
+          description: Image uploaded and report updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Image uploaded and report updated successfully'
+                  imageUrl:
+                    type: string
+                    example: 'https://your-s3-bucket.s3.amazonaws.com/path-to-image.jpg'
+        '400':
+          description: No image uploaded or invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'No image uploaded'
+        '500':
+          description: Server error
+
+  /api/reports/upload-s3:
+    post:
+      tags:
+        - Report
+      summary: Upload Report PDF to S3
+      description: Upload a PDF report to S3 for a specific video.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reportContent:
+                  type: string
+                  example: '<html><body>Your report content here</body></html>'
+                videoId:
+                  type: string
+                  example: '60d21b4667d0d8992e610c87'
+      responses:
+        '201':
+          description: Report uploaded to S3 successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Report uploaded to S3 successfully'
+                  reportUrl:
+                    type: string
+                    example: 'https://your-s3-bucket.s3.amazonaws.com/path-to-report.pdf'
+        '500':
+          description: Server error
+
+  /api/reports/get/{videoId}:
+    get:
+      tags:
+        - Report
+      summary: Get Report by Video ID
+      description: Retrieve the report for a specific video by its ID.
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: videoId
+          schema:
+            type: string
+            example: '60d21b4667d0d8992e610c87'
+          required: true
+          description: The ID of the video for which the report is to be retrieved
+      responses:
+        '200':
+          description: Successfully retrieved the report
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+        '404':
+          description: Report not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'Report not found'
+        '500':
+          description: Server error
+
+  /api/reports/delete-image/{videoId}/{imageId}:
+    delete:
+      tags:
+        - Report
+      summary: Delete Image in Report
+      description: Delete a specific image from a video report.
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: videoId
+          schema:
+            type: string
+            example: '60d21b4667d0d8992e610c87'
+          required: true
+          description: The ID of the video associated with the report
+        - in: path
+          name: imageId
+          schema:
+            type: string
+            example: '60d21b4667d0d8992e610c88'
+          required: true
+          description: The ID of the image to be deleted
+      responses:
+        '200':
+          description: Image deleted from report successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Image deleted from report successfully'
+        '500':
+          description: Server error
+
+  /api/reports/update/{videoId}:
+    put:
+      tags:
+        - Report
+      summary: Update Images in Report
+      description: Update the images and final suggestions for a specific video report.
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: videoId
+          schema:
+            type: string
+            example: '60d21b4667d0d8992e610c87'
+          required: true
+          description: The ID of the video associated with the report
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                images:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                        example: 'https://your-s3-bucket.s3.amazonaws.com/path-to-image.jpg'
+                      timestamp:
+                        type: integer
+                        example: 120
+                      comment:
+                        type: string
+                        example: 'Updated comment for the image.'
+                finalSuggestions:
+                  type: string
+                  example: 'These are the updated final suggestions for the report.'
+      responses:
+        '200':
+          description: Report updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Report updated successfully'
+        '500':
+          description: Server error
+
+  /api/reports/getReports:
+    get:
+      tags:
+        - Report
+      summary: Get Reports by User ID
+      description: Retrieve all reports associated with the logged-in user.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Successfully retrieved reports
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Report'
+        '404':
+          description: No reports found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'No reports found'
+        '500':
+          description: Server error
+
+  /api/reports/sendreport/{videoId}:
+    put:
+      tags:
+        - Report
+      summary: Send Report to User
+      description: Send the completed report to the user associated with the video.
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: videoId
+          schema:
+            type: string
+            example: '60d21b4667d0d8992e610c87'
+          required: true
+          description: The ID of the video for which the report is to be sent
+      responses:
+        '201':
+          description: Report sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Report sent successfully'
+        '404':
+          description: Report not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'Report Not Found'
+        '500':
+          description: Server error
+
 components:
   schemas:
     Reviewer:
@@ -428,52 +722,33 @@ components:
                   0,
                   0,
                   0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
                 ]
-        lastUpdate:
-          type: string
-          format: date-time
-          example: '2024-10-10T10:00:00Z'
-
-    Video:
+    Report:
       type: object
       properties:
         _id:
           type: string
+          example: '60d21b4667d0d8992e610c90'
+        videoId:
+          type: string
           example: '60d21b4667d0d8992e610c87'
-        reviewId:
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+                example: 'https://your-s3-bucket.s3.amazonaws.com/path-to-image.jpg'
+              timestamp:
+                type: integer
+                example: 120
+              comment:
+                type: string
+                example: 'This is a sample comment.'
+        finalSuggestions:
+          type: string
+          example: 'These are the final suggestions for the report.'
+        user:
           type: string
           example: '60d21b4667d0d8992e610c85'
-        videoUrl:
-          type: string
-          example: 'https://your-s3-bucket.s3.amazonaws.com/path-to-video.mp4'
-        orientation:
-          type: string
-          example: 'Landscape'
-          enum:
-            - Landscape
-            - Portrait
-        duration:
-          type: number
-          example: 300.5
-          description: 'Duration of the video in seconds'
-
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
