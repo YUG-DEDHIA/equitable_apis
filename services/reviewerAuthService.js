@@ -40,12 +40,37 @@ exports.login = async (email, password) => {
   if (!reviewer) {
     throw new Error("Unable to login, Account Not Exists");
   }
+
   const isMatch = await bcrypt.compare(password, reviewer.password);
   if (!isMatch) {
     throw new Error("Unable to login, Password Not Matched");
   }
+
+  // Generate a token
   const token = jwt.sign({ _id: reviewer._id.toString() }, process.env.JWT_SECRET);
-  return {token };
+
+  // Manually select fields to include in the response
+  const response = {
+    _id: reviewer._id,
+    name: reviewer.name,
+    age: reviewer.age,
+    gender: reviewer.gender,
+    mobileNumber: reviewer.mobileNumber,
+    email: reviewer.email,
+    profileImage: reviewer.profileImage,
+    signature: reviewer.signature,
+    profileType: reviewer.profileType,
+    country: reviewer.country,
+    online: reviewer.online,
+    rating: parseFloat(reviewer.rating), // Ensure correct data type
+    videosReviewed: reviewer.videosReviewed,
+    videosPending: reviewer.videosPending,
+    accountBalance: parseFloat(reviewer.accountBalance), // Ensure correct data type
+    in_review: reviewer.in_review,
+    currentReviewId: reviewer.currentReviewId,
+  };
+
+  return { token, reviewer: response };
 };
 
 exports.verifySession = async (token) => {

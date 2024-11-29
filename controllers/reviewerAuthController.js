@@ -1,3 +1,4 @@
+
 const authService = require("../services/reviewerAuthService");
 
 exports.register = async (req, res) => {
@@ -9,23 +10,34 @@ exports.register = async (req, res) => {
     res.status(status).json({ error: error.message });
   }
 };
-
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    // Call the authService.login method to authenticate
     const result = await authService.login(email, password);
+
+    // Log the result for debugging purposes (optional)
+    console.log(result);
+
+    // Set the authentication token as a cookie
     res.cookie("login_token", result.token, {
-      httpOnly: true,
-      sameSite: "strict",
-      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: true, // Prevent client-side JavaScript access
+      sameSite: "strict", // Prevent CSRF attacks
+      maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
     });
-    res.status(200).json({ reviewer: result.reviewer, token: result.token });
+
+    // Send response with the token and reviewer information
+    res.status(200).json({
+      reviewer: result.reviewer, // Send reviewer details
+      token: result.token,       // Send token for any additional client use
+    });
   } catch (error) {
+    // Handle any errors and send appropriate status and message
     const status = error.status || 400;
     res.status(status).json({ error: error.message });
   }
 };
-
 exports.loginWithPhone = async (req, res) => {
   try {
     const { mobileNumber } = req.body;
